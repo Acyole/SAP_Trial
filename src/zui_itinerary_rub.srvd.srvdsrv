@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Definition Itinerary'
+define service ZUI_ITINERARY_RUB {
+  expose ZC_ITINERARY_RUB as Itinerary;
+}

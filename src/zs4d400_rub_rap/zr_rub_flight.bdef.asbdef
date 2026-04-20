@@ -1,0 +1,54 @@
+managed implementation in class ZBP_R_RUB_FLIGHT unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZR_RUB_FLIGHT alias Flight
+persistent table zrub_flight
+extensible
+draft table zrub_flight_d
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master ( global )
+{
+  field ( readonly )
+  UUID,
+  CreatedBy,
+  CreatedAt,
+  LastChangedBy,
+  LastChangedAt,
+  LocalLastChangedAt;
+
+  field ( numbering : managed )
+  UUID;
+
+  create;
+  update;
+  delete;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zrub_flight corresponding extensible
+    {
+      UUID               = UUID;
+      Carrid             = CARRID;
+      Connid             = CONNID;
+      NameCarrier        = NAME;
+      Cityfrom           = CITYFROM;
+      Cityto             = CITYTO;
+      Price              = PRICE;
+      Currency           = CURRENCY;
+      CreatedBy          = CREATED_BY;
+      CreatedAt          = CREATED_AT;
+      LastChangedBy      = LAST_CHANGED_BY;
+      LastChangedAt      = LAST_CHANGED_AT;
+      LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+    }
+
+  validation CheckSemanticKey on save { create; update; }
+  validation CheckCarrierExist on save { create; update; }
+  determination GetNameCarrier on save { field Carrid; }
+}

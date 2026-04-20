@@ -1,0 +1,11 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "SAP Object Node Type ZRUB_FLIGHT",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "name": "ZRUB_FLIGHT",
+  "sapObjectType": "ZRUB_FLIGHT",
+  "rootNode": true
+}

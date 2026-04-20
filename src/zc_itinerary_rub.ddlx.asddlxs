@@ -1,0 +1,114 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'Itinerario de Voo',
+                typeNamePlural: 'Itinerarios de Voo',
+                title: { type: #STANDARD, value: 'TravelID' },
+                description: { type: #STANDARD, value: 'BookingID' } }
+}
+annotate entity ZC_ITINERARY_RUB with
+{
+  /* ==========================================================
+     1. DEFINICAO DE FACETAS (ESTRUTURA DA TELA DE DETALHES)
+     ========================================================== */
+  @UI.facet: [
+
+    /* --- ZONA DE CABECALHO (KPIs) --- */
+    { id:              'HeaderPrice',
+      purpose:         #HEADER,
+      type:            #DATAPOINT_REFERENCE,
+      targetQualifier: 'PriceData',
+      position:        10 },
+
+    { id:              'HeaderStatus',
+      purpose:         #HEADER,
+      type:            #DATAPOINT_REFERENCE,
+      targetQualifier: 'StatusData',
+      position:        20 },
+
+    /* --- ZONA DE CONTEUDO (Aba Principal) --- */
+    { id:              'GeneralInfoCollection',
+      purpose:         #STANDARD,
+      type:            #COLLECTION,
+      label:           'Informacoes Gerais',
+      position:        10 },
+
+    /* --- FORMULARIOS (Dentro da Aba Principal) --- */
+    { id:              'TravelForm',
+      parentId:        'GeneralInfoCollection',
+      type:            #FIELDGROUP_REFERENCE,
+      label:           'Dados da Viagem',
+      targetQualifier: 'TravelGroup',
+      position:        10 },
+
+    { id:              'FlightForm',
+      parentId:        'GeneralInfoCollection',
+      type:            #FIELDGROUP_REFERENCE,
+      label:           'Dados da Reserva e Voo',
+      targetQualifier: 'FlightGroup',
+      position:        20 }
+  ]
+
+  /* ==========================================================
+     2. MAPEAMENTO DE CAMPOS
+     ========================================================== */
+
+  @UI: { lineItem:       [ { position: 10 } ],
+         selectionField: [ { position: 10 } ],
+         fieldGroup:     [ { qualifier: 'TravelGroup', position: 10 } ] }
+  TravelID;
+
+  @UI: { lineItem:       [ { position: 20 } ],
+         selectionField: [ { position: 20 } ],
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 10 } ] }
+  BookingID;
+
+  @UI: { lineItem:       [ { position: 30 } ],
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 20 } ] }
+  BookingDate;
+
+  @UI: { lineItem:       [ { position: 40 } ],
+         selectionField: [ { position: 30 } ],
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 30 } ] }
+  CarrierID;
+
+  @UI: { lineItem:       [ { position: 50 } ],
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 40 } ] }
+  ConnectionID;
+
+  @UI: { lineItem:       [ { position: 60 } ],
+         selectionField: [ { position: 40 } ],
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 50 } ] }
+  FlightDate;
+
+  /* O preco ganha destaque especial no cabecalho usando dataPoint */
+  @UI: { lineItem:       [ { position: 70 } ],
+         dataPoint:      { title: 'Preco do Voo', qualifier: 'PriceData' },
+         fieldGroup:     [ { qualifier: 'FlightGroup', position: 60 } ] }
+  FlightPrice;
+
+  @UI.hidden: true
+  CurrencyCode;
+
+  @UI: { lineItem:       [ { position: 80 } ],
+         selectionField: [ { position: 50 } ],
+         fieldGroup:     [ { qualifier: 'TravelGroup', position: 20 } ] }
+  AgencyId;
+
+  @UI: { lineItem:       [ { position: 90 } ],
+         selectionField: [ { position: 60 } ],
+         fieldGroup:     [ { qualifier: 'TravelGroup', position: 30 } ] }
+  CustomerId;
+
+  /* Datas de inicio e fim nao poluem a tabela, aparecem apenas no detalhe */
+  @UI: { fieldGroup:     [ { qualifier: 'TravelGroup', position: 40 } ] }
+  BeginDate;
+
+  @UI: { fieldGroup:     [ { qualifier: 'TravelGroup', position: 50 } ] }
+  EndDate;
+
+  /* O status aparece na tabela, no formulario e no cabecalho como KPI */
+  @UI: { lineItem:       [ { position: 100 } ],
+         dataPoint:      { title: 'Status da Viagem', qualifier: 'StatusData' },
+         fieldGroup:     [ { qualifier: 'TravelGroup', position: 60 } ] }
+  Status;
+}
