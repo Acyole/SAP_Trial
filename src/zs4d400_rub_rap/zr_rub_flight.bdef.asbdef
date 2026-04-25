@@ -48,7 +48,8 @@ authorization master ( global )
       LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
     }
 
-  validation CheckSemanticKey on save { create; update; }
-  validation CheckCarrierExist on save { create; update; }
+  validation CheckSemanticKey on save { create; }
+  validation CheckCarrierExist on save { create; }
+  validation ValidatePrice on save { create; field Price; }
   determination GetNameCarrier on save { field Carrid; }
 }

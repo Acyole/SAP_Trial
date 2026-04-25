@@ -10,7 +10,9 @@ CLASS lhc_zr_rub_flight DEFINITION INHERITING FROM cl_abap_behavior_handler.
       CheckCarrierExist FOR VALIDATE ON SAVE
         IMPORTING keys FOR Flight~CheckCarrierExist,
       GetNameCarrier FOR DETERMINE ON SAVE
-        IMPORTING keys FOR Flight~GetNameCarrier.
+        IMPORTING keys FOR Flight~GetNameCarrier,
+      ValidatePrice FOR VALIDATE ON SAVE
+        IMPORTING keys FOR Flight~ValidatePrice.
 ENDCLASS.
 
 CLASS lhc_zr_rub_flight IMPLEMENTATION.
@@ -121,6 +123,35 @@ CLASS lhc_zr_rub_flight IMPLEMENTATION.
       REPORTED DATA(reported_records).
 
     reported-flight = CORRESPONDING #( reported_records-flight ).
+
+  ENDMETHOD.
+
+  METHOD ValidatePrice.
+
+    DATA: failed_record   LIKE LINE OF failed-flight,
+          reported_record LIKE LINE OF reported-flight.
+
+
+    READ ENTITIES OF zr_rub_flight IN LOCAL MODE
+    ENTITY Flight
+    FIELDS ( Price ) WITH CORRESPONDING #( keys )
+    RESULT DATA(flights).
+
+    LOOP AT flights INTO DATA(flight).
+
+      IF flight-Price <= 0.
+        failed_record-%tky = flight-%tky.
+        APPEND failed_record TO failed-flight.
+
+        reported_record-%tky = flight-%tky.
+        reported_record-%msg = new_message( id          = 'ZCL_MESSAGE'
+                                            number      = 005
+                                            severity    = ms-error
+                                            v1          = flight-Price
+        ).
+      ENDIF.
+
+    ENDLOOP.
 
   ENDMETHOD.
 
