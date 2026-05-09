@@ -21,6 +21,12 @@ define view entity zrub_c_employee
       Status,
       BirthDate,
       EntryDate,
+      DepartmentId,
       AnnualSalary,
-      CurrencyCode
+      CurrencyCode,
+      CreatedBy,
+      CreatedAt,
+      LastChangedBy,
+      LastChangedAt,
+      LocalLastChangedAt
 }

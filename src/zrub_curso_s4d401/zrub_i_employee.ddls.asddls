@@ -9,18 +9,24 @@
 define view entity zrub_I_Employee
   as select from zrub_employee
 {
-  key employee_id   as EmployeeId,
-      first_name    as FirstName,
-      last_name     as LastName,
-      street        as Street,
-      postal_code   as PostalCode,
-      city          as City,
-      country       as Country,      
-      status        as Status,
-      birth_date    as BirthDate,
-      entry_date    as EntryDate,
+  key employee_id           as EmployeeId,
+      first_name            as FirstName,
+      last_name             as LastName,
+      street                as Street,
+      postal_code           as PostalCode,
+      city                  as City,
+      country               as Country,
+      status                as Status,
+      birth_date            as BirthDate,
+      entry_date            as EntryDate,
+      department_id         as DepartmentId,
       @Semantics.amount.currencyCode: 'CurrencyCode'
-      annual_salary as AnnualSalary,
+      annual_salary         as AnnualSalary,
       @EndUserText.label: 'Currency Key'
-      currency_code as CurrencyCode
+      currency_code         as CurrencyCode,
+      created_by            as CreatedBy,
+      created_at            as CreatedAt,
+      last_changed_by       as LastChangedBy,
+      last_changed_at       as LastChangedAt,
+      local_last_changed_at as LocalLastChangedAt
 }
